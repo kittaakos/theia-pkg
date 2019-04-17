@@ -1,0 +1,13 @@
+tasks:
+  - init: >
+      yarn &&
+      yarn build &&
+      yarn package 
+github:
+  prebuilds:
+    master: true
+    branches: true
+    pullRequests: true
+    pullRequestsFromForks: true
+    addComment: false
+    addBadge: false
