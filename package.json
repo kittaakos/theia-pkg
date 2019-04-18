@@ -20,8 +20,7 @@
   "homepage": "https://github.com/kittaakos/theia-pkg#readme",
   "scripts": {
     "build": "theia build",
-    "package": "yarn patch && node ./scripts/pkg.js",
-    "patch": "node ./scripts/patch.js"
+    "package": "rimraf ./dist && node ./scripts/pkg.js"
   },
   "dependencies": {
     "@theia/callhierarchy": "next",
@@ -55,7 +54,8 @@
   },
   "devDependencies": {
     "@theia/cli": "next",
-    "pkg": "^4.3.7"
+    "pkg": "^4.3.7",
+    "rimraf": "^2.6.3"
   },
   "engines": {
     "node": ">=10.2.0"
