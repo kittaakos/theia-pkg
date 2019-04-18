@@ -60,11 +60,10 @@
   "engines": {
     "node": ">=10.2.0"
   },
-  "//bin": "The main entry point for 'pkg'",
   "bin": "src-gen/backend/main.js",
   "pkg": {
     "assets": [
-      "src-gen/backend/server.js"
+      "lib/**/*"
     ]
   }
 }
