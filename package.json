@@ -20,7 +20,8 @@
   "homepage": "https://github.com/kittaakos/theia-pkg#readme",
   "scripts": {
     "build": "theia build",
-    "package": "node scripts/pkg.js"
+    "package": "yarn patch && node ./scripts/pkg.js",
+    "patch": "node ./scripts/patch.js"
   },
   "dependencies": {
     "@theia/callhierarchy": "next",
