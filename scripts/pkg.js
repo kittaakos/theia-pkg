@@ -2,19 +2,51 @@
 
 (async () => {
 
+    const rimraf = require('rimraf')
     const fs = require('fs')
     const path = require('path')
     const pkg = require('pkg')
+    const Renamer = require('renamer')
+    const CliApp = require('renamer/lib/cli-app')
 
     const outPath = path.resolve(__dirname, '..', 'dist')
-    await pkg.exec([
-        path.resolve(__dirname, '..', 'package.json'),
-        '--target',
-        target(),
-        '--out-path',
-        outPath,
-    ])
-    copyAddons(outPath)
+    rimraf(outPath, (error => {
+        if (error) {
+            console.error(`An unexpected error occurred when cleaning the output folder ${outPath}`)
+            console.error(error)
+            process.exit(1)
+        }
+    }))
+
+    const renamer = new Renamer()
+    const renamerCli = new CliApp()
+    const writeOutput = renamerCli.writeOutput.bind(renamerCli)
+    renamer.on('replace-result', result => {
+        writeOutput(false, undefined, result)
+    })
+    try {
+        // Trick `pkg`.
+        // Based on https://github.com/zeit/pkg/issues/329#issuecomment-398151429
+        renamer.rename({
+            find: '.node',
+            replace: '.foolpkg',
+            files: ['**/*.node'],
+        })
+        await pkg.exec([
+            path.resolve(__dirname, '..', 'package.json'),
+            '--target',
+            target(),
+            '--out-path',
+            outPath,
+        ])
+    } finally {
+        // Revert rename.
+        renamer.rename({
+            find: '.foolpkg',
+            replace: '.node',
+            files: ['**/*.foolpkg'],
+        })
+    }
 
     function target() {
         return `${nodeRange()}-${platform()}-${arch()}`

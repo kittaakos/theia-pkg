@@ -54,7 +54,9 @@
   },
   "devDependencies": {
     "@theia/cli": "next",
+    "patch-package": "^6.1.2",
     "pkg": "^4.3.7",
+    "renamer": "^1.1.1",
     "rimraf": "^2.6.3"
   },
   "engines": {
