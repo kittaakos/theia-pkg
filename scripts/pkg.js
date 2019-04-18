@@ -1,24 +1,25 @@
 // @ts-check
 (async () => {
 
-    const path = require('path');
-    const exec = require('pkg').exec
-
-    await exec([
+    const path = require('path')
+    const pkg = require('pkg')
+    
+    const outPath = path.resolve(__dirname, '..', 'dist')
+    await pkg.exec([
         path.resolve(__dirname, '..', 'package.json'),
         '--target',
         target(),
         '--out-path',
-        path.resolve(__dirname, '..', 'dist'),
+        outPath,
     ])
-
+    require('./copy-addons').copyAddons(outPath)
 
     function target() {
         return `${nodeRange()}-${platform()}-${arch()}`
     }
 
     function arch() {
-        return process.arch;
+        return process.arch
     }
 
     function platform() {
